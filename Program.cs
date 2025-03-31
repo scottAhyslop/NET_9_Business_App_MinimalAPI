@@ -1,6 +1,13 @@
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
+app.UseRouting();
+
+app.Use(async (context, next) => 
+{
+    await next(context);
+});
+
 app.UseEndpoints(endpoints =>
 {
     //GET /employees
