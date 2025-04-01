@@ -35,13 +35,27 @@ app.UseEndpoints(endpoints =>
         await context.Response.WriteAsync($"Deleted the Employee: {context.Request.RouteValues["id"]}");
     });//End DELETE
 
-    //GET /default size in categories
+//Sample Example
+
+ /*   //GET /default size in categories
     endpoints.MapGet("/{category=shirts}/{size=medium}/{id?}", async (HttpContext context) =>
     {
         await context.Response.WriteAsync($"Get Category: {context.Request.RouteValues["category"]} " +
             $"\nin Size: {context.Request.RouteValues["size"]} ");
-    });//End GET default size in categories  
-   
+    });//End GET default size in categories  */
+
+    //GET /employee/id
+    endpoints.MapGet("/employees/{id:int}", async (HttpContext context) =>
+    {
+        await context.Response.WriteAsync($"Have received Employee with EmployeeId of: {context.Request.RouteValues["id"]}");
+    });//End GET employee by Id
+
+    //GET /employee/name
+    endpoints.MapGet("/employees/{name}", async (HttpContext context) =>
+    {
+        await context.Response.WriteAsync($"Have received Employee named: {context.Request.RouteValues["name"]}");
+    });//End GET employee by Name
+
 });//End UseEndpoints
 
 app.Run();
