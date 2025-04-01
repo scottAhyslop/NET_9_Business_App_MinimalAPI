@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using System.Security.Cryptography.X509Certificates;
+
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
@@ -27,9 +30,11 @@ app.UseEndpoints(endpoints =>
     });//End PUT
 
     //DELETE /employees
-    endpoints.MapDelete("/employees", async (HttpContext context) =>
+    endpoints.MapDelete("/employees/{position}/{id}", async (HttpContext context) =>
     {
-        await context.Response.WriteAsync("Delete an Employee");
+        
+        await context.Response.WriteAsync($"Deleted the Employee: {context.Request.RouteValues["id"]}");
+
     });//End DELETE
 });//End UseEndpoints
 
