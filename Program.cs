@@ -132,34 +132,26 @@ app.UseEndpoints(endpoints =>
         }
     });//End PUT
 
-    //DELETE /employees
-    endpoints.MapDelete("/employees/{id:int}", async (HttpContext context) =>
+    //DELETE /employees Delete Employee by Id
+    endpoints.MapDelete("/employees/{EmployeeId:int}", async (HttpContext context) =>
     {
         var id = context.Request.RouteValues["EmployeeId"];
-        var employeeId = int.Parse(id.ToString());//take passed in param and convert it into an int
+        var employeeId = int.Parse(id.ToString()); 
 
+        var result = EmployeesRepository.DeleteEmployee(employeeId);
 
-        var employee = EmployeesRepository.GetEmployeeById(employeeId);
-
-        if (employee is not null)
+        if (result)//if there's a valid result from the EmployeeRepository
         {
-            await context.Response.WriteAsync($"Employee deleted. Records updated.");
+            await context.Response.WriteAsync($"Employee {result} deleted. Records updated.");
         }
-        else if (employee is null)
+        else//otherewise, if no employee found, produce code and inform user
         {
             context.Response.StatusCode = 404;//not found
             await context.Response.WriteAsync("Employee not found.  Records unchanged.");
-        }
-
-        else//if not authorized, tell user
-        {
-            context.Response.StatusCode = 401;//not authorized
-            await context.Response.WriteAsync("User Unauthorized to delete...");
-        }
-        ;
+        }        
     });//End DELETE
 
-//Sample Example
+//Sample Examples
 
  /*   //GET /default size in categories
     endpoints.MapGet("/{category=shirts}/{size=medium}/{id?}", async (HttpContext context) =>
@@ -179,4 +171,4 @@ app.UseEndpoints(endpoints =>
 
 app.Run();
 
-//NOTE:Default values have to start first, and optional values are found at the end
+//NOTE:Default values have to start first, and optional values are found at the end of the arguments
