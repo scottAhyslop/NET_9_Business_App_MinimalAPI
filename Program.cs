@@ -36,12 +36,14 @@ app.UseEndpoints(endpoints =>
     });//End DELETE
 
     //GET /default size in categories
-    endpoints.MapGet("/{category=shirts}/{size=medium}", async (HttpContext context) =>
+    endpoints.MapGet("/{category=shirts}/{size=medium}/{id?}", async (HttpContext context) =>
     {
         await context.Response.WriteAsync($"Get Category: {context.Request.RouteValues["category"]} " +
             $"\nin Size: {context.Request.RouteValues["size"]} ");
     });//End GET default size in categories  
-
+   
 });//End UseEndpoints
 
 app.Run();
+
+//NOTE:Default values have to start first, and optional values are found at the end
