@@ -31,11 +31,17 @@ app.UseEndpoints(endpoints =>
 
     //DELETE /employees
     endpoints.MapDelete("/employees/{position}/{id}", async (HttpContext context) =>
-    {
-        
+    {        
         await context.Response.WriteAsync($"Deleted the Employee: {context.Request.RouteValues["id"]}");
-
     });//End DELETE
+
+    //GET /default size in categories
+    endpoints.MapGet("/{category=shirts}/{size=medium}", async (HttpContext context) =>
+    {
+        await context.Response.WriteAsync($"Get Category: {context.Request.RouteValues["category"]} " +
+            $"\nin Size: {context.Request.RouteValues["size"]} ");
+    });//End GET default size in categories  
+
 });//End UseEndpoints
 
 app.Run();
