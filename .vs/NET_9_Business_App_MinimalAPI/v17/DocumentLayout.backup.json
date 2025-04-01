@@ -5,14 +5,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{769BF6BD-85D4-466B-8FAF-AE2EE1A06642}|NET_9_Business_App_MinimalAPI.csproj|f:\\net_9_sample\\net_9_business_app_minimalapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{769BF6BD-85D4-466B-8FAF-AE2EE1A06642}|NET_9_Business_App_MinimalAPI.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{769BF6BD-85D4-466B-8FAF-AE2EE1A06642}|NET_9_Business_App_MinimalAPI.csproj|f:\\net_9_sample\\net_9_business_app_minimalapi\\classes\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{769BF6BD-85D4-466B-8FAF-AE2EE1A06642}|NET_9_Business_App_MinimalAPI.csproj|solutionrelative:classes\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{769BF6BD-85D4-466B-8FAF-AE2EE1A06642}|NET_9_Business_App_MinimalAPI.csproj|f:\\net_9_sample\\net_9_business_app_minimalapi\\customconstraints\\customconstraints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{769BF6BD-85D4-466B-8FAF-AE2EE1A06642}|NET_9_Business_App_MinimalAPI.csproj|solutionrelative:customconstraints\\customconstraints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,7 +14,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -34,40 +26,15 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Employee.cs",
-              "DocumentMoniker": "F:\\NET_9_Sample\\NET_9_Business_App_MinimalAPI\\Classes\\Employee.cs",
-              "RelativeDocumentMoniker": "Classes\\Employee.cs",
-              "ToolTip": "F:\\NET_9_Sample\\NET_9_Business_App_MinimalAPI\\Classes\\Employee.cs",
-              "RelativeToolTip": "Classes\\Employee.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFQAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-01T02:45:13.069Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "CustomConstraints.cs",
-              "DocumentMoniker": "F:\\NET_9_Sample\\NET_9_Business_App_MinimalAPI\\CustomConstraints\\CustomConstraints.cs",
-              "RelativeDocumentMoniker": "CustomConstraints\\CustomConstraints.cs",
-              "ToolTip": "F:\\NET_9_Sample\\NET_9_Business_App_MinimalAPI\\CustomConstraints\\CustomConstraints.cs",
-              "RelativeToolTip": "CustomConstraints\\CustomConstraints.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAZAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-01T02:02:32.958Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Program.cs",
               "DocumentMoniker": "F:\\NET_9_Sample\\NET_9_Business_App_MinimalAPI\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "F:\\NET_9_Sample\\NET_9_Business_App_MinimalAPI\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAHoAAAAAAAAAAAAIwKkAAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAE0AAAAAAAAAAAAAAIkAAAA7AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-31T21:51:37.331Z",
+              "WhenOpened": "2025-04-01T13:58:51.074Z",
               "EditorCaption": ""
             }
           ]

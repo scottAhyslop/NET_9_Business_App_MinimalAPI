@@ -1,26 +1,19 @@
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
-using NET_9_Business_App_MinimalAPI.Classes;
-using NET_9_Business_App_MinimalAPI.CustomConstraints;
-using System.Security.Cryptography.X509Certificates;
+using NET_9_Business_App_MinimalAPI.Models;
 using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
+/*//Register services with DI
 builder.Services.AddRouting(options =>
 {
 
     options.ConstraintMap.Add("pos", typeof(CustomConstraint));
-});
+});*///Custom Constraint service registration
 
 //always be last
 var app = builder.Build();
 
 app.UseRouting();
-
-app.Use(async (context, next) => 
-{
-    await next(context);
-});
 
 #pragma warning disable ASP0014 // Suggest using top level route registrations
 app.UseEndpoints(endpoints =>
@@ -49,11 +42,11 @@ app.UseEndpoints(endpoints =>
         var employees = EmployeesRepository.GetEmployees();//get a list of employees
         context.Response.StatusCode = 201;
         await context.Response.WriteAsync($"<table>");
-        await context.Response.WriteAsync($"<tr><header><b>Employee List</b>: </tr></header><br/>");
+        await context.Response.WriteAsync($"<tr><header><b><h2>Employee List</b>:<h2> </tr></header><br/>");
         await context.Response.WriteAsync($"<tr><header><td><b>Name</b></td><td><b>Position</b><td><b>Salary</b></td></tr></header>");
         foreach (var employee in employees)//display each employee in the list
         {
-            await context.Response.WriteAsync($"<tr><td>{employee.EmployeeFirstName} {employee.EmployeeLastName}:</td><td>{employee.EmployeePosition}</td><td>${employee.EmployeeSalary}</td></tr>");//display each employee's info
+            await context.Response.WriteAsync($"<tr><td>{employee.EmployeeFirstName} {employee.EmployeeLastName}</td><td>{employee.EmployeePosition}</td><td>${employee.EmployeeSalary}</td></tr>");//display each employee's info
         }
         await context.Response.WriteAsync($"</table>");
        
@@ -62,31 +55,28 @@ app.UseEndpoints(endpoints =>
     //GET /employees/id
     endpoints.MapGet("/employees/{EmployeeId:int}", async (HttpContext context) =>
     {
-        var id = context.Request.Query["EmployeeId"];
-        if (int.TryParse(id, out int employeeId))//take passed in param and convert it into an int
-        {
-            //get a specific employee, from passed in Id
-            if (employeeId != 0)//make sure the int > 0, i.e. not null, and look for it
-            {
-                var employee = EmployeesRepository.GetEmployeeById(employeeId);
-                if (employee is not null)
-                {
-                    await context.Response.WriteAsync($"<table>");
+        var id = context.Request.RouteValues["EmployeeId"];
+        var employeeId = int.Parse(id.ToString());//take passed in param and convert it into an int
 
-                    await context.Response.WriteAsync($"<tr><header><td><b>Name</b>: </td><td> {employee.EmployeeFirstName} {employee.EmployeeLastName}</td></header></tr>");
-                    await context.Response.WriteAsync($"<tr><td><b>Position</b>:</td><td>{employee.EmployeePosition}</td></tr>");
-                    await context.Response.WriteAsync($"<tr><td><b>Salary</b>:</td><td> {employee.EmployeeSalary}</td></tr>");
-                    await context.Response.WriteAsync($"</table>");
-                }
-                else if (employee is null)
-                {
-                    context.Response.StatusCode = 404;
-                    await context.Response.WriteAsync("<b>Employee not found</b>");
-                    //TODO display message for timed period, log fail, return to search by Id screen
-                    return;
-                }
-            }
-        }       
+
+        var employee = EmployeesRepository.GetEmployeeById(employeeId);
+        if (employee is not null)
+        {
+            await context.Response.WriteAsync($"<h3>Employee as requested:</h3>");
+            await context.Response.WriteAsync($"<table>");
+
+            await context.Response.WriteAsync($"<tr><header><td><b>Name</b>: </td><td> {employee.EmployeeFirstName} {employee.EmployeeLastName}</td></header></tr>");
+            await context.Response.WriteAsync($"<tr><td><b>Position</b>:</td><td>{employee.EmployeePosition}</td></tr>");
+            await context.Response.WriteAsync($"<tr><td><b>Salary</b>:</td><td> {employee.EmployeeSalary}</td></tr>");
+            await context.Response.WriteAsync($"</table>");
+        }
+        else if (employee is null)
+        {
+            context.Response.StatusCode = 404;
+            await context.Response.WriteAsync("<b>Employee not found</b>");
+            //TODO display message for timed period, log fail, return to search by Id screen
+            return;
+        }
     });//End GET EmployeeById
 
     //POST /employees Create an employee
@@ -143,29 +133,28 @@ app.UseEndpoints(endpoints =>
     });//End PUT
 
     //DELETE /employees
-    endpoints.MapDelete("/employees/{position}/{id:int}", async (HttpContext context) =>
+    endpoints.MapDelete("/employees/{id:int}", async (HttpContext context) =>
     {
-        var id = context.Request.Query["EmployeeId"];
-        if (int.TryParse(id, out int employeeId))//take in param, attempt to parse into int
+        var id = context.Request.RouteValues["EmployeeId"];
+        var employeeId = int.Parse(id.ToString());//take passed in param and convert it into an int
+
+
+        var employee = EmployeesRepository.GetEmployeeById(employeeId);
+
+        if (employee is not null)
         {
-            if (context.Request.Headers["Authorization"] == "dredge")//auth check
-            {
-                var employee = EmployeesRepository.DeleteEmployee(employeeId);
-                if (employee)
-                {
-                    await context.Response.WriteAsync($"Employee deleted. Records updated.");
-                }
-                else
-                {
-                    context.Response.StatusCode = 404;//not found
-                    await context.Response.WriteAsync("Employee not found.  Records unchanged.");
-                }
-            }//end auth check
-            else//if not authorized, tell user
-            {
-                context.Response.StatusCode = 401;//not authorized
-                await context.Response.WriteAsync("User Unauthorized to delete...");
-            }
+            await context.Response.WriteAsync($"Employee deleted. Records updated.");
+        }
+        else if (employee is null)
+        {
+            context.Response.StatusCode = 404;//not found
+            await context.Response.WriteAsync("Employee not found.  Records unchanged.");
+        }
+
+        else//if not authorized, tell user
+        {
+            context.Response.StatusCode = 401;//not authorized
+            await context.Response.WriteAsync("User Unauthorized to delete...");
         }
         ;
     });//End DELETE
@@ -179,11 +168,11 @@ app.UseEndpoints(endpoints =>
             $"\nin Size: {context.Request.RouteValues["size"]} ");
     });//End GET default size in categories  */
 
-    //GET /employee/id in position by CustomConstraint
+ /* //GET /employee/id in position by CustomConstraint
     endpoints.MapGet("/employees/positions/{positions:pos}", async (HttpContext context) =>
     {
         await context.Response.WriteAsync($"Get Employees with a position of:  {context.Request.RouteValues["positions"]}");
-    });//End GET employee by Id
+    });//End GET employee by Id*/
 
 });//End UseEndpoints
 #pragma warning restore ASP0014 // Suggest using top level route registrations
