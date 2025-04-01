@@ -1,7 +1,16 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using NET_9_Business_App_MinimalAPI.CustomConstraints;
 using System.Security.Cryptography.X509Certificates;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddRouting(options =>
+{
+
+    options.ConstraintMap.Add("pos", typeof(CustomConstraint));
+});
+
+//always be last
 var app = builder.Build();
 
 app.UseRouting();
@@ -55,6 +64,12 @@ app.UseEndpoints(endpoints =>
     {
         await context.Response.WriteAsync($"Have received Employee named: {context.Request.RouteValues["name"]}");
     });//End GET employee by Name
+
+    //GET /employee/id in position by CustomConstraint
+    endpoints.MapGet("/employees/positions/{positions:pos}", async (HttpContext context) =>
+    {
+        await context.Response.WriteAsync($"Get Employees with a position of:  {context.Request.RouteValues["positions"]}");
+    });//End GET employee by Id
 
 });//End UseEndpoints
 
