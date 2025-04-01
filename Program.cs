@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using NET_9_Business_App_MinimalAPI.Classes;
 using NET_9_Business_App_MinimalAPI.CustomConstraints;
 using System.Security.Cryptography.X509Certificates;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,28 +22,152 @@ app.Use(async (context, next) =>
     await next(context);
 });
 
+#pragma warning disable ASP0014 // Suggest using top level route registrations
 app.UseEndpoints(endpoints =>
 {
+    //DEFAULT landing endpoint
+    endpoints.MapGet("/", async (HttpContext context) =>
+    {
+        context.Response.Headers["Content-Type"] = "text/html";
+        await context.Response.WriteAsync($"<h2>Test Data</h2><h3>Your page has loaded properly</h3><h4>Your endpoints are avilable for data...</h4>");
+        await context.Response.WriteAsync($"The Method is: {context.Request.Method}<br/>");
+        await context.Response.WriteAsync($"The URL is: {context.Request.Path}<br/>");
+        await context.Response.WriteAsync($"<br/><b>Headers</b>: <br/>");
+        await context.Response.WriteAsync($"<ul>");
+        
+        foreach (var key in context.Request.Headers.Keys)
+        {
+            await context.Response.WriteAsync($"<li><b>{key}</b>: {context.Request.Headers[key]}</li>");
+        }
+        await context.Response.WriteAsync($"</ul>");
+    });//End Default
+
     //GET /employees
     endpoints.MapGet("/employees", async (HttpContext context) =>
-    { await context.Response.WriteAsync("Get Employees");
-    });//End GET
+    {
+        //get all employees
+        var employees = EmployeesRepository.GetEmployees();//get a list of employees
+        context.Response.StatusCode = 201;
+        await context.Response.WriteAsync($"<table>");
+        await context.Response.WriteAsync($"<tr><header><b>Employee List</b>: </tr></header><br/>");
+        await context.Response.WriteAsync($"<tr><header><td><b>Name</b></td><td><b>Position</b><td><b>Salary</b></td></tr></header>");
+        foreach (var employee in employees)//display each employee in the list
+        {
+            await context.Response.WriteAsync($"<tr><td>{employee.EmployeeFirstName} {employee.EmployeeLastName}:</td><td>{employee.EmployeePosition}</td><td>${employee.EmployeeSalary}</td></tr>");//display each employee's info
+        }
+        await context.Response.WriteAsync($"</table>");
+       
+    });//End GET employees
 
-    //POST /employees
+    //GET /employees/id
+    endpoints.MapGet("/employees/{EmployeeId:int}", async (HttpContext context) =>
+    {
+        var id = context.Request.Query["EmployeeId"];
+        if (int.TryParse(id, out int employeeId))//take passed in param and convert it into an int
+        {
+            //get a specific employee, from passed in Id
+            if (employeeId != 0)//make sure the int > 0, i.e. not null, and look for it
+            {
+                var employee = EmployeesRepository.GetEmployeeById(employeeId);
+                if (employee is not null)
+                {
+                    await context.Response.WriteAsync($"<table>");
+
+                    await context.Response.WriteAsync($"<tr><header><td><b>Name</b>: </td><td> {employee.EmployeeFirstName} {employee.EmployeeLastName}</td></header></tr>");
+                    await context.Response.WriteAsync($"<tr><td><b>Position</b>:</td><td>{employee.EmployeePosition}</td></tr>");
+                    await context.Response.WriteAsync($"<tr><td><b>Salary</b>:</td><td> {employee.EmployeeSalary}</td></tr>");
+                    await context.Response.WriteAsync($"</table>");
+                }
+                else if (employee is null)
+                {
+                    context.Response.StatusCode = 404;
+                    await context.Response.WriteAsync("<b>Employee not found</b>");
+                    //TODO display message for timed period, log fail, return to search by Id screen
+                    return;
+                }
+            }
+        }       
+    });//End GET EmployeeById
+
+    //POST /employees Create an employee
     endpoints.MapPost("/employees", async (HttpContext context) =>
-     { await context.Response.WriteAsync("Create an Employee");
+     {
+         using var reader = new StreamReader(context.Request.Body);
+         var body = await reader.ReadToEndAsync();
+         var employee = JsonSerializer.Deserialize<Employee>(body);
+         try
+         {
+             if (employee is not null)
+             {
+                 EmployeesRepository.AddEmployee(employee);
+                 context.Response.StatusCode = 201;
+                 await context.Response.WriteAsync($"Employee: {employee.EmployeeFirstName} {employee.EmployeeLastName} added. Records updated.");
+
+             }
+             else if (employee is null || employee.EmployeeId <= 0)
+             {
+                 context.Response.StatusCode = 400;
+                 await context.Response.WriteAsync("Bad response to your request");
+                 //TODO redirect home after displaying timed error message and log error deets
+                 return;
+             }
+         }
+         catch (Exception ex)
+         {
+             await context.Response.WriteAsync(ex.ToString());
+             context.Response.StatusCode = 400;
+         }//end try/catch     
      });//End POST
 
-    //PUT /employees
+    //PUT /employees  Update an Employee
     endpoints.MapPut("/employees", async (HttpContext context) =>
     {
-        await context.Response.WriteAsync("Update an  Employee");
+        //get a list of employees
+        using var reader = new StreamReader(context.Request.Body);
+        var body = await reader.ReadToEndAsync();
+        var employee = JsonSerializer.Deserialize<Employee>(body);
+
+        //Update employee with "PUT" info from request
+        var result = EmployeesRepository.UpdateEmployee(employee);
+        if (result)
+        {
+            //context.Response.StatusCode = 204;
+            await context.Response.WriteAsync("Employee updated successfully");
+            return;
+        }
+        else
+        {
+            context.Response.StatusCode = 404;
+            await context.Response.WriteAsync("No employee found");
+        }
     });//End PUT
 
     //DELETE /employees
-    endpoints.MapDelete("/employees/{position}/{id}", async (HttpContext context) =>
-    {        
-        await context.Response.WriteAsync($"Deleted the Employee: {context.Request.RouteValues["id"]}");
+    endpoints.MapDelete("/employees/{position}/{id:int}", async (HttpContext context) =>
+    {
+        var id = context.Request.Query["EmployeeId"];
+        if (int.TryParse(id, out int employeeId))//take in param, attempt to parse into int
+        {
+            if (context.Request.Headers["Authorization"] == "dredge")//auth check
+            {
+                var employee = EmployeesRepository.DeleteEmployee(employeeId);
+                if (employee)
+                {
+                    await context.Response.WriteAsync($"Employee deleted. Records updated.");
+                }
+                else
+                {
+                    context.Response.StatusCode = 404;//not found
+                    await context.Response.WriteAsync("Employee not found.  Records unchanged.");
+                }
+            }//end auth check
+            else//if not authorized, tell user
+            {
+                context.Response.StatusCode = 401;//not authorized
+                await context.Response.WriteAsync("User Unauthorized to delete...");
+            }
+        }
+        ;
     });//End DELETE
 
 //Sample Example
@@ -53,18 +179,6 @@ app.UseEndpoints(endpoints =>
             $"\nin Size: {context.Request.RouteValues["size"]} ");
     });//End GET default size in categories  */
 
-    //GET /employee/id
-    endpoints.MapGet("/employees/{id:int}", async (HttpContext context) =>
-    {
-        await context.Response.WriteAsync($"Have received Employee with EmployeeId of: {context.Request.RouteValues["id"]}");
-    });//End GET employee by Id
-
-    //GET /employee/name
-    endpoints.MapGet("/employees/{name}", async (HttpContext context) =>
-    {
-        await context.Response.WriteAsync($"Have received Employee named: {context.Request.RouteValues["name"]}");
-    });//End GET employee by Name
-
     //GET /employee/id in position by CustomConstraint
     endpoints.MapGet("/employees/positions/{positions:pos}", async (HttpContext context) =>
     {
@@ -72,6 +186,7 @@ app.UseEndpoints(endpoints =>
     });//End GET employee by Id
 
 });//End UseEndpoints
+#pragma warning restore ASP0014 // Suggest using top level route registrations
 
 app.Run();
 
