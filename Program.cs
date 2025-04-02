@@ -55,7 +55,7 @@ app.UseEndpoints(endpoints =>
         });//End GET employees*///End GET Employees pre-Model
 
     //GET /employees/id
-    _ = endpoints.MapGet("/employees/{id:int}", ([AsParameters] GetEmployeeParameters param) =>
+    _ = endpoints.MapGet("/employees/{EmployeeId:int}", ([AsParameters] GetEmployeeParameters param) =>
     {
         var employee = EmployeesRepository.GetEmployeeById(param.EmployeeId);
         if (employee is not null)
