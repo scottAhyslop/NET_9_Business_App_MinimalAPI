@@ -42,8 +42,7 @@
               "RelativeToolTip": "Models\\EmployeesRepository.cs",
               "ViewState": "AgIAABsAAAAAAAAAAAAAAAYAAABDAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-02T15:25:57.985Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-02T15:25:57.985Z"
             },
             {
               "$type": "Document",
@@ -63,9 +62,9 @@
               "Title": "Program.cs",
               "DocumentMoniker": "F:\\NET_9_Sample\\NET_9_Business_App_MinimalAPI\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "F:\\NET_9_Sample\\NET_9_Business_App_MinimalAPI\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAABEAAAAAAAAAAAAAADkAAAAvAAAAAAAAAA==",
+              "ToolTip": "F:\\NET_9_Sample\\NET_9_Business_App_MinimalAPI\\Program.cs*",
+              "RelativeToolTip": "Program.cs*",
+              "ViewState": "AgIAABEAAAAAAAAAAAA0wDYAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-01T13:58:51.074Z",
               "EditorCaption": ""

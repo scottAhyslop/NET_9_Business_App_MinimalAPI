@@ -36,39 +36,60 @@ app.UseEndpoints(endpoints =>
         await context.Response.WriteAsync($"</ul>");
     });//End Default
 
-    /*
-        //GET /employees
-        endpoints.MapGet("/employees", async (HttpContext context) =>
-        {
-            //get all employees
-            var employees = EmployeesRepository.GetEmployees();//get a list of employees
-            context.Response.StatusCode = 201;
-            await context.Response.WriteAsync($"<table>");
-            await context.Response.WriteAsync($"<tr><header><b><h2>Employee List</b>:<h2> </tr></header><br/>");
-            await context.Response.WriteAsync($"<tr><header><td><b>Name</b></td><td><b>Position</b><td><b>Salary</b></td></tr></header>");
-            foreach (var employee in employees)//display each employee in the list
-            {
-                await context.Response.WriteAsync($"<tr><td>{employee.EmployeeFirstName} {employee.EmployeeLastName}</td><td>{employee.EmployeePosition}</td><td>${employee.EmployeeSalary}</td></tr>");//display each employee's info
-            }
-            await context.Response.WriteAsync($"</table>");
 
-        });//End GET employees*///End GET Employees pre-Model
+/*    //GET /employees
+    endpoints.MapGet("/employees", async (HttpContext context) =>
+    {
+        //get all employees
+        var employees = EmployeesRepository.GetEmployees();//get a list of employees
+        context.Response.StatusCode = 201;
+        await context.Response.WriteAsync($"<table>");
+        await context.Response.WriteAsync($"<tr><header><b><h2>Employee List</b>:<h2> </tr></header><br/>");
+        await context.Response.WriteAsync($"<tr><header><td><b>Name</b></td><td><b>Position</b><td><b>Salary</b></td></tr></header>");
+        foreach (var employee in employees)//display each employee in the list
+        {
+            await context.Response.WriteAsync($"<tr><td>{employee.EmployeeFirstName} {employee.EmployeeLastName}</td><td>{employee.EmployeePosition}</td><td>${employee.EmployeeSalary}</td></tr>");//display each employee's info
+        }
+        await context.Response.WriteAsync($"</table>");
+
+    });*///End GET employees//End GET Employees pre-Model
+
+    /*    //GET /employees/id
+        _ = endpoints.MapGet("/employees/{EmployeeId:int}", ([AsParameters] GetEmployeeParameters param) =>
+        {
+            var employee = EmployeesRepository.GetEmployeeById(param.EmployeeId);
+            if (employee is not null)
+            {
+                employee.EmployeeFirstName = param.EmployeeLastName;
+                employee.EmployeePosition = param.EmployeePosition;
+            }
+
+
+            return employee;
+        });//End GET EmployeeById*/ //End GET EmployeeById with params
+
+    /*    //GET /employees/id
+        _ = endpoints.MapGet("/employees", ([FromQuery(Name = "id")]int[] ids) =>
+        {
+            var employees = EmployeesRepository.GetEmployees();//load all the employees
+            var emps = employees.Where(emp => ids.Contains(emp.EmployeeId)).ToList();//load a list with the results
+            return emps;//return the list as JSON obj within an array
+
+        });*///End GET EmployeeById returning from Query String array
 
     //GET /employees/id
-    _ = endpoints.MapGet("/employees/{EmployeeId:int}", ([AsParameters] GetEmployeeParameters param) =>
+    endpoints.MapGet("/employees", ([FromHeader(Name = "id")] int[] ids) =>
     {
-        var employee = EmployeesRepository.GetEmployeeById(param.EmployeeId);
-        if (employee is not null)
-        {
-            employee.EmployeeFirstName = param.EmployeeLastName;
-            employee.EmployeePosition = param.EmployeePosition;
-        }
-       
+        var employees = EmployeesRepository.GetEmployees();//load all the employees
+        var emps = employees.Where(emp => ids.Contains(emp.EmployeeId)).ToList();//load a list with the results
+        return emps;//return the list as JSON obj within an array
 
-        return employee;
-    });//End GET EmployeeById
+    });
 
-    //POST /employees Create an employee
+
+
+
+    //POST /employees Create an employee *
     endpoints.MapPost("/employees", async (HttpContext context) =>
      {
          using var reader = new StreamReader(context.Request.Body);

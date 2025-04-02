@@ -2,30 +2,20 @@
   {
     "ContainingType": "Program\u002B\u003C\u003Ec",
     "Method": "\u003C\u003CMain\u003E$\u003Eb__0_2",
-    "RelativePath": "employees/{EmployeeId:int}",
+    "RelativePath": "employees",
     "HttpMethod": "GET",
     "IsController": false,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "EmployeeId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "EmployeeLastName",
-        "Type": "System.String",
-        "IsRequired": true
-      },
-      {
-        "Name": "EmployeePosition",
-        "Type": "System.String",
+        "Name": "id",
+        "Type": "System.Int32[]",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "NET_9_Business_App_MinimalAPI.Models.Employee",
+        "Type": "System.Collections.Generic.List\u00601[[NET_9_Business_App_MinimalAPI.Models.Employee, NET_9_Business_App_MinimalAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "application/json"
         ],
