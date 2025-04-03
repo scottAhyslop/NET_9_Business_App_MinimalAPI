@@ -37,11 +37,12 @@ endpoints.MapGet("/", async (HttpContext context) =>
     await context.Response.WriteAsync($"</ul>");
 });//End Default
 
-endpoints.MapGet ("/people/", (Person person) => 
-{
-    return $"EmployeeId: {person.EmployeeId} " +
-        $"EmployeeLastName: {person.EmployeeLastName}";
-});
+    //Person endpoint for EmployeeId and EmployeeLastName
+    endpoints.MapGet ("/people/", (Person person) => 
+    {
+        return $"EmployeeId: {person.EmployeeId} " +
+                $"EmployeeLastName: {person.EmployeeLastName}";
+    });//End Person endpoint //Get EmployeeById and EmployeeLastName (with Person class as complex type)
 
     /*    //GET /employees
     endpoints.MapGet("/employees", async (HttpContext context) =>
@@ -184,5 +185,13 @@ class GetEmployeeParameters
     public string EmployeePosition { get; set; }
 }
 
-//NOTE:Default values have to start first, and optional values are found at the end of the arguments
+//NOTE:Default values have to start first, and optional values are found at the end of argument
 //MinimalAPI projects will only accept input in a JSON format...only can use one data type when binding as well
+
+//Binding source priorities: (first to last)
+//1. Explicit
+//2. BindAsync
+//3. Bind primitives to route parameter
+//4. Bind primitives to query string
+//5. Bind array to query string or headers
+//6. Body

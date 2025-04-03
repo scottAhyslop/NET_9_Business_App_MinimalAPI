@@ -1,5 +1,6 @@
 ﻿namespace NET_9_Business_App_MinimalAPI.Models
 {
+    // Repository to hold all employees
     public static class EmployeesRepository
     {
         private static List<Employee> employees = new List<Employee>
