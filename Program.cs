@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using NET_9_Business_App_MinimalAPI.Models;
+using System.Reflection;
 using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,25 +20,30 @@ app.UseRouting();
 #pragma warning disable ASP0014 // Suggest using top level route registrations
 app.UseEndpoints(endpoints =>
 {
-    //DEFAULT landing endpoint
-    endpoints.MapGet("/", async (HttpContext context) =>
+//DEFAULT landing endpoint
+endpoints.MapGet("/", async (HttpContext context) =>
+{
+    context.Response.Headers["Content-Type"] = "text/html";
+    await context.Response.WriteAsync($"<h2>Test Data</h2><h3>Your page has loaded properly</h3><h4>Your endpoints are avilable for data...</h4>");
+    await context.Response.WriteAsync($"The Method is: {context.Request.Method}<br/>");
+    await context.Response.WriteAsync($"The URL is: {context.Request.Path}<br/>");
+    await context.Response.WriteAsync($"<br/><b>Headers</b>: <br/>");
+    await context.Response.WriteAsync($"<ul>");
+
+    foreach (var key in context.Request.Headers.Keys)
     {
-        context.Response.Headers["Content-Type"] = "text/html";
-        await context.Response.WriteAsync($"<h2>Test Data</h2><h3>Your page has loaded properly</h3><h4>Your endpoints are avilable for data...</h4>");
-        await context.Response.WriteAsync($"The Method is: {context.Request.Method}<br/>");
-        await context.Response.WriteAsync($"The URL is: {context.Request.Path}<br/>");
-        await context.Response.WriteAsync($"<br/><b>Headers</b>: <br/>");
-        await context.Response.WriteAsync($"<ul>");
+        await context.Response.WriteAsync($"<li><b>{key}</b>: {context.Request.Headers[key]}</li>");
+    }
+    await context.Response.WriteAsync($"</ul>");
+});//End Default
 
-        foreach (var key in context.Request.Headers.Keys)
-        {
-            await context.Response.WriteAsync($"<li><b>{key}</b>: {context.Request.Headers[key]}</li>");
-        }
-        await context.Response.WriteAsync($"</ul>");
-    });//End Default
+endpoints.MapGet ("/people/", (Person person) => 
+{
+    return $"EmployeeId: {person.EmployeeId} " +
+        $"EmployeeLastName: {person.EmployeeLastName}";
+});
 
-
-/*    //GET /employees
+    /*    //GET /employees
     endpoints.MapGet("/employees", async (HttpContext context) =>
     {
         //get all employees
@@ -164,6 +170,9 @@ app.UseEndpoints(endpoints =>
 #pragma warning restore ASP0014 // Suggest using top level route registrations
 
 app.Run();
+
+
+
 
 class GetEmployeeParameters
 {

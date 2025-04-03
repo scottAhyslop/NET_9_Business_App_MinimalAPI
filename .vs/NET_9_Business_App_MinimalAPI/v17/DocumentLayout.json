@@ -7,6 +7,10 @@
       "RelativeMoniker": "D:0:0:{769BF6BD-85D4-466B-8FAF-AE2EE1A06642}|NET_9_Business_App_MinimalAPI.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{769BF6BD-85D4-466B-8FAF-AE2EE1A06642}|NET_9_Business_App_MinimalAPI.csproj|f:\\net_9_sample\\net_9_business_app_minimalapi\\models\\person.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{769BF6BD-85D4-466B-8FAF-AE2EE1A06642}|NET_9_Business_App_MinimalAPI.csproj|solutionrelative:models\\person.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{769BF6BD-85D4-466B-8FAF-AE2EE1A06642}|NET_9_Business_App_MinimalAPI.csproj|f:\\net_9_sample\\net_9_business_app_minimalapi\\models\\employeesrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{769BF6BD-85D4-466B-8FAF-AE2EE1A06642}|NET_9_Business_App_MinimalAPI.csproj|solutionrelative:models\\employeesrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -22,11 +26,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Person.cs",
+              "DocumentMoniker": "F:\\NET_9_Sample\\NET_9_Business_App_MinimalAPI\\Models\\Person.cs",
+              "RelativeDocumentMoniker": "Models\\Person.cs",
+              "ToolTip": "F:\\NET_9_Sample\\NET_9_Business_App_MinimalAPI\\Models\\Person.cs",
+              "RelativeToolTip": "Models\\Person.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-03T16:21:54.599Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Bookmark",
@@ -34,27 +51,29 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "EmployeesRepository.cs",
               "DocumentMoniker": "F:\\NET_9_Sample\\NET_9_Business_App_MinimalAPI\\Models\\EmployeesRepository.cs",
               "RelativeDocumentMoniker": "Models\\EmployeesRepository.cs",
               "ToolTip": "F:\\NET_9_Sample\\NET_9_Business_App_MinimalAPI\\Models\\EmployeesRepository.cs",
               "RelativeToolTip": "Models\\EmployeesRepository.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAAAAAYAAABDAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAABDAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-02T15:25:57.985Z"
+              "WhenOpened": "2025-04-02T15:25:57.985Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Employee.cs",
               "DocumentMoniker": "F:\\NET_9_Sample\\NET_9_Business_App_MinimalAPI\\Models\\Employee.cs",
               "RelativeDocumentMoniker": "Models\\Employee.cs",
               "ToolTip": "F:\\NET_9_Sample\\NET_9_Business_App_MinimalAPI\\Models\\Employee.cs",
               "RelativeToolTip": "Models\\Employee.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-02T15:25:37.08Z"
+              "WhenOpened": "2025-04-02T15:25:37.08Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -64,7 +83,7 @@
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "F:\\NET_9_Sample\\NET_9_Business_App_MinimalAPI\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAACcAAAAAAAAAAAAAAFgAAAA/AAAAAAAAAA==",
+              "ViewState": "AgIAAAEAAAAAAAAAAAD4v60AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-01T13:58:51.074Z",
               "EditorCaption": ""
