@@ -66,7 +66,7 @@ app.UseEndpoints(endpoints =>
 
 
             return employee;
-        });//End GET EmployeeById*/ //End GET EmployeeById with params
+        });//End GET EmployeeById*/ //End GET EmployeeById with custom params
 
     /*    //GET /employees/id
         _ = endpoints.MapGet("/employees", ([FromQuery(Name = "id")]int[] ids) =>
@@ -77,47 +77,30 @@ app.UseEndpoints(endpoints =>
 
         });*///End GET EmployeeById returning from Query String array
 
-    //GET /employees/id
+    /*    //GET /employees/id
     endpoints.MapGet("/employees", ([FromHeader(Name = "id")] int[] ids) =>
     {
         var employees = EmployeesRepository.GetEmployees();//load all the employees
         var emps = employees.Where(emp => ids.Contains(emp.EmployeeId)).ToList();//load a list with the results
         return emps;//return the list as JSON obj within an array
 
-    });
+    }); *///end GET EmployeeById returning from Header array
 
-
-
-
-    //POST /employees Create an employee *
-    endpoints.MapPost("/employees", async (HttpContext context) =>
+    //POST /employees Create an employee with complex data type
+    endpoints.MapPost("/employees", static (Employee employee) =>
      {
-         using var reader = new StreamReader(context.Request.Body);
-         var body = await reader.ReadToEndAsync();
-         var employee = JsonSerializer.Deserialize<Employee>(body);
-         try
-         {
-             if (employee is not null)
-             {
-                 EmployeesRepository.AddEmployee(employee);
-                 context.Response.StatusCode = 201;
-                 await context.Response.WriteAsync($"Employee: {employee.EmployeeFirstName} {employee.EmployeeLastName} added. Records updated.");
 
-             }
-             else if (employee is null || employee.EmployeeId <= 0)
-             {
-                 context.Response.StatusCode = 400;
-                 await context.Response.WriteAsync("Bad response to your request");
-                 //TODO redirect home after displaying timed error message and log error deets
-                 return;
-             }
-         }
-         catch (Exception ex)
+         if (employee is null || employee.EmployeeId <= 0)
          {
-             await context.Response.WriteAsync(ex.ToString());
-             context.Response.StatusCode = 400;
-         }//end try/catch     
-     });//End POST
+
+             return "Employee is not provided or is not valid.";
+         }
+
+         EmployeesRepository.AddEmployee(employee);//add employee to the list
+
+         return "Employee added successfully";
+
+     });//End POST  //end Create an employee with complex data type
 
     //PUT /employees  Update an Employee
     endpoints.MapPut("/employees", async (HttpContext context) =>
@@ -193,3 +176,4 @@ class GetEmployeeParameters
 }
 
 //NOTE:Default values have to start first, and optional values are found at the end of the arguments
+//MinimalAPI projects will only accept input in a JSON format...only can use one data type when binding as well
